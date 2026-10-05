@@ -45,6 +45,7 @@
                 try
                 {
                     _vfs = VirtualFileSystem.LoadFromCsv(vfsPath);
+                    CommandExecutor.Vfs = _vfs;
                     Console.WriteLine("[VFS] Файловая система успешно загружена в память.");
                 }
                 catch (Exception ex)
@@ -93,7 +94,7 @@
         }
         private static string GetDirectory()
         {
-            return _vfs?.CurrentDirectory.Name ?? "vfs";
+            return _vfs?.GetCurrentPath() ?? "vfs";
         }
 
     }

@@ -1,0 +1,24 @@
+ls
+ls docs
+ls biglog.txt
+ls non_existent_folder
+cd docs
+ls
+cd sub
+cd ..
+cd /docs/sub
+cd /
+cd biglog.txt
+cd invalid_folder
+cd a b c
+tail biglog.txt
+tail /docs/notes.txt
+tail
+tail docs
+tail missing_file.txt
+rev /docs/notes.txt
+rev
+rev docs
+rev missing_file.txt
+unknown_command
+exit

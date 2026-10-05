@@ -1,14 +1,24 @@
 public class VfsNode
 {
     public string Name {get;set;} = "";
-    public bool IsDirectory{get; private set;}
+    public bool IsDirectory{get; init;}
     public byte[]? Content {get; set;}
     public VfsNode? Parent{get;set;}
     public Dictionary<string, VfsNode> Children {get;} = new();
 
-    public VfsNode(bool isDirectory)
+    private VfsNode(string name, bool isDirectory, VfsNode? parent)
     {
+        Name = name;
         IsDirectory = isDirectory;
+        Parent = parent;
+    }
+    public static VfsNode CreateDirectory(string name, VfsNode? parent = null)
+    {
+        return new VfsNode(name, true, parent);
+    }
+    public static VfsNode CreateFile(string name, byte[]? content, VfsNode? parent = null)
+    {
+        return new VfsNode(name, false, parent){Content = content};
     }
     
 }

@@ -2,12 +2,30 @@ namespace ConsoleEmulator;
 
 public sealed class VirtualFileSystem
 {
-    public VfsNode Root {get;} = new(true) {Name = "/"};
+    public VfsNode Root {get;} = VfsNode.CreateDirectory("/");
+
     public VfsNode CurrentDirectory{get;private set;}
 
     public VirtualFileSystem()
     {
         CurrentDirectory = Root;
+    }
+    public string GetCurrentPath()
+    {
+        if (CurrentDirectory == Root)
+        {
+            return "/";
+        }
+        string result = "";
+        VfsNode? current = CurrentDirectory;
+
+        while (current != null && current != Root)
+        {
+            result = "/" + current.Name + result;
+            current = current.Parent;
+        }
+
+        return result;
     }
     
     public static VirtualFileSystem LoadFromCsv(string csvPath)
@@ -65,11 +83,7 @@ public sealed class VirtualFileSystem
         {
             if (!current.Children.TryGetValue(segment,out VfsNode? child))
             {
-                child = new VfsNode(true)
-                {
-                    Name = segment,
-                    Parent = current
-                };
+                child = VfsNode.CreateDirectory(segment,current);
                 current.Children[segment] = child;
             }
             current = child;
@@ -89,11 +103,7 @@ public sealed class VirtualFileSystem
             string dirName = segments[i];
             if (!current.Children.TryGetValue(dirName, out VfsNode? dir))
             {
-                dir = new VfsNode(true)
-                {
-                    Name = dirName,
-                    Parent = current
-                };
+                dir = VfsNode.CreateDirectory(dirName, current);
                 current.Children[dirName] = dir;
             }
 
@@ -101,12 +111,36 @@ public sealed class VirtualFileSystem
         }
 
         string fileName = segments[^1];
-        var fileNode = new VfsNode(false)
-        {
-            Name = fileName,
-            Content = content,
-            Parent = current
-        };
+        VfsNode fileNode = VfsNode.CreateFile(fileName, content, current); 
         current.Children[fileName] = fileNode;
     }
+
+    public bool ChangeDirectory(string? path, out string errorMessage)
+    {
+        errorMessage = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            CurrentDirectory = Root;
+            return true;
+        }
+
+        VfsNode? target = PathResolver.Resolve(Root, CurrentDirectory, path);
+
+        if (target == null)
+        {
+            errorMessage = $"cd: {path}: Файл или директория отсутствует";
+            return false;
+        }
+
+        if (!target.IsDirectory)
+        {
+            errorMessage = $"cd: {path}: Не является директорией";
+            return false;
+        }
+
+        CurrentDirectory = target;
+        return true;
+    }
+    
 }
