@@ -1,0 +1,10 @@
+Path,Type,Content
+/,dir,
+/readme.txt,file,cm9vdCBmaWxl
+/home,dir,
+/home/user,dir,
+/home/user/docs,dir,
+/home/user/docs/notes.txt,file,SGVsbG8gd29ybGQ=
+/etc,dir,
+/etc/system,dir,
+/etc/system/config.cfg,file,Y29uZmlnX3ZhbHVlPTEyMw==

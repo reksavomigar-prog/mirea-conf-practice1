@@ -1,0 +1,5 @@
+Path,Type,Content
+/,dir,
+/file1.txt,file,VGVzdCAx
+/file2.txt,file,VGVzdCAy
+/file3.txt,file,VGVzdCAz

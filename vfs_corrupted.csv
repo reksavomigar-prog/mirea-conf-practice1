@@ -1,0 +1,4 @@
+Path,Type,Content
+/,dir,
+/bad_item,invalid_type,
+/broken_row

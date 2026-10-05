@@ -2,13 +2,13 @@
 {
     internal static class Program
     {
-        private const string VfsRoot = "src";
-        private static string _vfs = VfsRoot;
+        private static VirtualFileSystem? _vfs = null;
         private static void Main(string[] args)
         {
             EmulatorConfig emulatorConfig = GetConfig(args);
             Console.WriteLine($"[Config] VFS: {emulatorConfig.VfsPath ?? "(не задан)"}");
             Console.WriteLine($"[Config] Script: {emulatorConfig.ScriptPath ?? "(не задан)"}");
+
             SetVfs(emulatorConfig.VfsPath);
             HandleScript(emulatorConfig.ScriptPath);
             RunMainLoop();
@@ -27,7 +27,7 @@
             string[] lines = File.ReadAllLines(scriptPath);
             foreach(var line in lines)
             {
-                Console.WriteLine($"{_vfs}>{line}");
+                Console.WriteLine($"{GetDirectory()}>{line}");
                 if (Parser.TryParse(line, out ParsedCommand command))
                 {
                     if (command.Name == "exit")
@@ -40,7 +40,18 @@
         }
         private static void SetVfs(string? vfsPath)
         {
-            _vfs = vfsPath == null ? VfsRoot : vfsPath;
+            if (!string.IsNullOrEmpty(vfsPath))
+            {
+                try
+                {
+                    _vfs = VirtualFileSystem.LoadFromCsv(vfsPath);
+                    Console.WriteLine("[VFS] Файловая система успешно загружена в память.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[VFS Ошибка] Не удалось загрузить VFS: {ex.Message}");
+                }
+            }
         }
         
         private static EmulatorConfig GetConfig(string[] args)
@@ -68,7 +79,7 @@
         {
             while (true)
             {
-                Console.Write($"{_vfs}>");
+                Console.Write($"{GetDirectory()}>");
                 string? input = Console.ReadLine();
                 if (Parser.TryParse(input, out ParsedCommand command))
                 {
@@ -79,6 +90,10 @@
                     CommandExecutor.ExecuteCommand(command.Name, command.Args);
                 }
             }
+        }
+        private static string GetDirectory()
+        {
+            return _vfs?.CurrentDirectory.Name ?? "vfs";
         }
 
     }

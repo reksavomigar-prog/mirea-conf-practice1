@@ -1,0 +1,5 @@
+ls
+cd test_dir
+some_invalid_command
+cd
+ls -l -a
