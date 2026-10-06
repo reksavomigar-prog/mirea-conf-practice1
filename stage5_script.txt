@@ -1,0 +1,18 @@
+ls
+cp /file.txt /docs
+ls /docs
+cp /file.txt /file_copy.txt
+ls
+cp /file.txt /docs/renamed.txt
+ls /docs
+cp /docs /docs_backup
+ls /docs_backup
+ls /docs_backup/sub
+cp /empty.txt /file_copy.txt
+cp
+cp /file.txt
+cp a b c
+cp missing.txt /docs
+cp /file.txt /nowhere/new.txt
+cp /docs /docs/sub/nested
+exit

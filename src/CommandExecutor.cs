@@ -21,6 +21,9 @@ namespace ConsoleEmulator
                 case "rev":
                     ExecuteRev(args);
                     break;
+                case "cp":
+                    ExecuteCp(args);
+                    break;
                 default:
                     Console.WriteLine($"{command} не является внутренней или внешней командой исполняемой программой или пакетным файлом");
                     break;
@@ -163,6 +166,37 @@ namespace ConsoleEmulator
                 char[] charArray = line.ToCharArray();
                 Array.Reverse(charArray);
                 Console.WriteLine(new string(charArray));
+            }
+        }
+        private static void ExecuteCp(string[] args)
+        {
+            if (Vfs == null)
+            {
+                Console.WriteLine("cp: файловая система не инициализирована");
+                return;
+            }
+
+            if (args.Length == 0)
+            {
+                Console.WriteLine("cp: пропущен операнд, задающий файл-источник");
+                return;
+            }
+
+            if (args.Length == 1)
+            {
+                Console.WriteLine($"cp: после '{args[0]}' пропущен операнд, задающий целевой файл");
+                return;
+            }
+
+            if (args.Length > 2)
+            {
+                Console.WriteLine("cp: слишком много аргументов");
+                return;
+            }
+
+            if (!Vfs.Copy(args[0], args[1], out string errorMessage))
+            {
+                Console.WriteLine(errorMessage);
             }
         }
     }

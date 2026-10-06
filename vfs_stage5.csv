@@ -1,0 +1,7 @@
+Path,Type,Content
+/,dir,
+/docs,dir,
+/docs/sub,dir,
+/docs/notes.txt,file,SGVsbG8gV29ybGQKMTIzNDUKQWJjIGRlZg==
+/file.txt,file,VGVzdCBDb250ZW50
+/empty.txt,file,

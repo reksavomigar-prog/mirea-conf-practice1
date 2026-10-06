@@ -20,5 +20,21 @@ public class VfsNode
     {
         return new VfsNode(name, false, parent){Content = content};
     }
+
+    public VfsNode Clone(string newName, VfsNode? newParent = null)
+    {
+        if (IsDirectory)
+        {
+            var dirClone = CreateDirectory(newName, newParent);
+            foreach (var (childName, childNode) in Children)
+            {
+                dirClone.Children[childName] = childNode.Clone(childName, dirClone);
+            }
+            return dirClone;
+        }
+
+        byte[]? contentCopy = Content != null ? (byte[])Content.Clone() : null;
+        return CreateFile(newName, contentCopy, newParent);
+    }   
     
 }
