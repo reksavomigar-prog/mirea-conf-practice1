@@ -25,7 +25,8 @@ namespace ConsoleEmulator
                     ExecuteCp(args);
                     break;
                 default:
-                    Console.WriteLine($"{command} не является внутренней или внешней командой исполняемой программой или пакетным файлом");
+                    Console.WriteLine($"{command} не является внутренней или внешней командой "
+                    + "исполняемой программой или пакетным файлом");
                     break;
             }
         }

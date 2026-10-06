@@ -143,7 +143,8 @@ public sealed class VirtualFileSystem
             return false;
         }
 
-        if (!TryResolveDestination(sourceNode, destPath, out VfsNode parentDir, out string targetName, out errorMessage))
+        if (!TryResolveDestination(sourceNode, destPath, 
+            out VfsNode parentDir, out string targetName, out errorMessage))
             return false;
 
         if (sourceNode.IsDirectory && IsDescendantOf(parentDir, sourceNode))
