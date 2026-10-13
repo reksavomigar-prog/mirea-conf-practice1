@@ -1,1 +1,1 @@
-dotnet run --project src -- %*
+dotnet run --project ../src -- %*

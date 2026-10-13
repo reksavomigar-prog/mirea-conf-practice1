@@ -4,7 +4,8 @@ public sealed class VirtualFileSystem
 {
     public VfsNode Root { get; } = VfsNode.CreateDirectory("/");
     public VfsNode CurrentDirectory { get; private set; }
-
+    
+    private const int CreatingArgumentsCount = 2;
     public VirtualFileSystem()
     {
         CurrentDirectory = Root;
@@ -46,12 +47,12 @@ public sealed class VirtualFileSystem
     private void ParseAndCreateNode(string csvLine)
     {
         string[] parts = csvLine.Split(',');
-        if (parts.Length < 2)
+        if (parts.Length < CreatingArgumentsCount)
             throw new Exception($"Некорректная строка в CSV: '{csvLine}'");
 
         string filePath = parts[0].Trim();
         string type = parts[1].Trim();
-        string content = parts.Length > 2 ? parts[2].Trim() : string.Empty;
+        string content = parts.Length > CreatingArgumentsCount ? parts[CreatingArgumentsCount].Trim() : string.Empty;
 
         if (type == "dir")
         {

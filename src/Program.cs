@@ -46,6 +46,7 @@
                 {
                     _vfs = VirtualFileSystem.LoadFromCsv(vfsPath);
                     CommandExecutor.Vfs = _vfs;
+                    CommandExecutor.Init();
                     Console.WriteLine("[VFS] Файловая система успешно загружена в память.");
                 }
                 catch (Exception ex)
